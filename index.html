@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI Business Assistant</title>
+</head>
+
+<body>
+
+    <h1>AI Business Assistant</h1>
+
+    <h2>Contact Us</h2>
+    <form action="/submit" method="POST">
+        <input name="name" placeholder="Name" required><br><br>
+        <input name="email" placeholder="Email" required><br><br>
+        <input name="phone" placeholder="Phone"><br><br>
+        <textarea name="message" placeholder="Message"></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2>AI Assistant</h2>
+
+    <div id="chat-box"></div>
+
+    <input type="text" id="msg" placeholder="Ask me something...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            let msg = document.getElementById("msg").value;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);  // 🔥 debug
+
+                    document.getElementById("chat-box").innerHTML +=
+                        "<p><b>You:</b> " + msg + "</p>" +
+                        "<p><b>AI:</b> " + (data.reply || "No reply") + "</p>";
+                });
+        }
+    </script>
+
+</body>
+
+</html>
